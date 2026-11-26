@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ciclo VIVA • 8º Ano • Gestão da Operação e Resultados</title>
+<style>
+  :root{
+    --viva-blue:#004c93;
+    --viva-blue-dark:#003a73;
+    --viva-green:#27a636;
+    --viva-green-dark:#1f8a2b;
+    --viva-orange:#ef7216;
+    --viva-orange-dark:#cf5f0d;
+    --bg:#f8fafc;
+    --surface:#ffffff;
+    --text:#0f172a;
+    --muted:#475569;
+    --border:#e2e8f0;
+    --soft:#eef4fb;
+    --shadow:0 10px 30px rgba(15,23,42,.08);
+    --radius:18px;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"Noto Sans",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+
+  /* ---------- HEADER ---------- */
+  header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:var(--viva-blue);
+    color:#fff;
+    box-shadow:0 4px 18px rgba(0,76,147,.22);
+  }
+  .header-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    flex-wrap:wrap;
+    padding:14px clamp(16px,3vw,34px);
+  }
+  .brand{display:flex;align-items:center;gap:12px;min-width:0}
+  .brand-mark{display:flex;gap:4px;flex:none}
+  .brand-mark span{width:7px;height:34px;border-radius:4px}
+  .brand-mark .b1{background:var(--viva-blue);outline:2px solid rgba(255,255,255,.55)}
+  .brand-mark .b2{background:var(--viva-green)}
+  .brand-mark .b3{background:var(--viva-orange)}
+  .brand-text{font-weight:700;font-size:clamp(.95rem,1.6vw,1.25rem);letter-spacing:.2px;line-height:1.25}
+  .brand-text small{display:block;font-weight:500;opacity:.85;font-size:clamp(.7rem,1.1vw,.85rem);letter-spacing:.4px}
+
+  .controls{display:flex;gap:10px;flex:none}
+  .controls button{
+    font:inherit;
+    font-weight:600;
+    border:2px solid rgba(255,255,255,.55);
+    background:transparent;
+    color:#fff;
+    padding:9px 18px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:background .2s,opacity .2s,transform .1s;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .controls button:hover:not(:disabled){background:rgba(255,255,255,.16)}
+  .controls button:active:not(:disabled){transform:translateY(1px)}
+  .controls button:disabled{opacity:.4;cursor:not-allowed}
+  .controls button svg{width:16px;height:16px}
+
+  .blocks-nav{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    padding:0 clamp(10px,3vw,34px) 10px;
+  }
+  .blocks-nav button{
+    font:inherit;
+    font-size:clamp(.74rem,1.15vw,.92rem);
+    font-weight:600;
+    color:#dbeafe;
+    background:rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.18);
+    padding:8px 14px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:background .2s,color .2s,transform .1s;
+    white-space:nowrap;
+  }
+  .blocks-nav button:hover{background:rgba(255,255,255,.22);color:#fff}
+  .blocks-nav button.active{
+    background:#fff;
+    color:var(--viva-blue);
+    border-color:#fff;
+    box-shadow:0 4px 12px rgba(0,0,0,.18);
+  }
+
+  /* ---------- MAIN / SLIDES ---------- */
+  main{padding:clamp(20px,3vw,40px) clamp(16px,4vw,56px) 60px}
+  .slide{display:none;max-width:1180px;margin:0 auto}
+  .slide.active{display:block;animation:slideIn .45s ease both}
+  @keyframes slideIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-weight:700;letter-spacing:1.4px;text-transform:uppercase;
+    font-size:clamp(.7rem,1.1vw,.82rem);
+    color:var(--viva-blue);
+    background:var(--soft);
+    padding:8px 16px;border-radius:999px;
+    margin-bottom:18px;
+  }
+  .eyebrow .dot{width:9px;height:9px;border-radius:50%;background:var(--viva-orange)}
+
+  h1.slide-title{
+    font-size:clamp(1.9rem,4.6vw,3.4rem);
+    line-height:1.08;
+    font-weight:800;
+    color:var(--viva-blue);
+    letter-spacing:-.5px;
+    margin-bottom:10px;
+  }
+  h2.slide-sub{
+    font-size:clamp(1.15rem,2.4vw,1.7rem);
+    font-weight:700;
+    color:var(--text);
+    margin-bottom:22px;
+  }
+  .lead{
+    font-size:clamp(1.05rem,1.9vw,1.4rem);
+    color:var(--muted);
+    max-width:60ch;
+    margin-bottom:26px;
+  }
+
+  .section-label{
+    display:flex;align-items:center;gap:12px;
+    font-weight:800;color:var(--viva-blue);
+    font-size:clamp(1.05rem,1.9vw,1.3rem);
+    margin:34px 0 16px;
+  }
+  .section-label::before{
+    content:"";width:8px;height:26px;border-radius:6px;background:var(--viva-orange);
+  }
+  .section-label.green::before{background:var(--viva-green)}
+
+  /* cards generic */
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:clamp(18px,2vw,26px);
+  }
+
+  /* ---------- BLOCK 1: pillars ---------- */
+  .hero-card{
+    background:linear-gradient(135deg,var(--viva-blue) 0%,var(--viva-blue-dark) 100%);
+    color:#fff;
+    border:none;
+    border-radius:24px;
+    padding:clamp(26px,4vw,46px);
+    box-shadow:0 18px 40px rgba(0,76,147,.28);
+    position:relative;overflow:hidden;
+  }
+  .hero-card::after{
+    content:"";position:absolute;right:-60px;top:-60px;width:240px;height:240px;border-radius:50%;
+    background:radial-gradient(circle,rgba(239,114,22,.45),transparent 70%);
+  }
+  .hero-card .hero-idea{
+    font-size:clamp(1.2rem,2.6vw,1.85rem);
+    font-weight:700;line-height:1.35;max-width:30ch;position:relative;z-index:1;
+  }
+  .hero-card .hero-idea b{color:#ffe7c2}
+
+  .pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:26px}
+  .pillar{
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    padding:22px 18px;text-align:center;box-shadow:var(--shadow);
+    border-top:5px solid var(--viva-blue);
+  }
+  .pillar:nth-child(2){border-top-color:var(--viva-green)}
+  .pillar:nth-child(3){border-top-color:var(--viva-orange)}
+  .pillar:nth-child(4){border-top-color:var(--viva-blue-dark)}
+  .pillar .ico{width:48px;height:48px;margin:0 auto 12px;color:var(--viva-blue)}
+  .pillar:nth-child(2) .ico{color:var(--viva-green)}
+  .pillar:nth-child(3) .ico{color:var(--viva-orange)}
+  .pillar:nth-child(4) .ico{color:var(--viva-blue-dark)}
+  .pillar h3{font-size:1.15rem;margin-bottom:6px;color:var(--text)}
+  .pillar p{font-size:.95rem;color:var(--muted)}
+
+  .flow-arrow{
+    text-align:center;margin:18px 0 6px;color:var(--viva-orange);font-weight:800;font-size:1.4rem;
+  }
+  .result-banner{
+    background:linear-gradient(135deg,var(--viva-green),var(--viva-green-dark));
+    color:#fff;border-radius:18px;padding:20px 26px;text-align:center;
+    font-weight:800;font-size:clamp(1.2rem,2.2vw,1.6rem);box-shadow:var(--shadow);
+    display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;
+  }
+  .result-banner svg{width:30px;height:30px;flex:none}
+
+  /* ---------- BLOCK 2: impact + comparison ---------- */
+  .impact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .impact{
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    padding:22px;box-shadow:var(--shadow);border-left:6px solid var(--viva-orange);
+  }
+  .impact .ico{width:40px;height:40px;color:var(--viva-orange);margin-bottom:12px}
+  .impact h3{font-size:1.2rem;margin-bottom:8px}
+  .impact p{color:var(--muted);font-size:1rem;margin-bottom:10px}
+  .impact .loss{
+    display:inline-flex;align-items:center;gap:8px;font-weight:700;color:var(--viva-orange-dark);
+    background:#fff4ea;padding:6px 12px;border-radius:8px;font-size:.92rem;
+  }
+
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:8px}
+  .compare .col{border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow);background:var(--surface)}
+  .compare .head{padding:16px 22px;color:#fff;font-weight:800;font-size:1.15rem;display:flex;align-items:center;gap:10px}
+  .compare .head svg{width:22px;height:22px}
+  .compare .improv .head{background:var(--viva-orange)}
+  .compare .struct .head{background:var(--viva-green)}
+  .compare ul{list-style:none;padding:18px 22px}
+  .compare li{padding:11px 0;border-bottom:1px dashed var(--border);display:flex;gap:12px;align-items:flex-start;font-size:1rem}
+  .compare li:last-child{border-bottom:none}
+  .compare li .mark{flex:none;margin-top:3px}
+  .compare .improv .mark{color:var(--viva-orange)}
+  .compare .struct .mark{color:var(--viva-green)}
+
+  /* ---------- BLOCK 3: capacity + standards ---------- */
+  .duo{display:grid;grid-template-columns:1.05fr 1fr;gap:22px}
+  .concept{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px}
+  .concept h3{color:var(--viva-blue);font-size:1.35rem;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+  .concept h3 svg{width:26px;height:26px;color:var(--viva-blue)}
+  .concept .row{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--border)}
+  .concept .row:last-child{border-bottom:none}
+  .concept .row .k{flex:none;width:120px;font-weight:800;color:var(--viva-blue-dark)}
+  .concept .row .v{color:var(--muted)}
+
+  .peak-meter{
+    background:linear-gradient(135deg,#fff7ee,#fff);border:1px solid #f3d9bd;border-radius:var(--radius);
+    padding:22px;box-shadow:var(--shadow)
+  }
+  .peak-meter .lbl{font-weight:800;color:var(--viva-orange-dark);margin-bottom:14px;font-size:1.05rem}
+  .meter-bar{height:18px;border-radius:999px;background:#ffe2cc;overflow:hidden;position:relative}
+  .meter-bar .fill{height:100%;width:88%;background:linear-gradient(90deg,var(--viva-orange),#ffb347);border-radius:999px}
+  .meter-cap{display:flex;justify-content:space-between;margin-top:8px;font-size:.85rem;color:var(--muted)}
+
+  .standards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}
+  .standard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);border-top:5px solid var(--viva-green)}
+  .standard .num{
+    width:34px;height:34px;border-radius:10px;background:var(--viva-green);color:#fff;
+    font-weight:800;display:grid;place-items:center;margin-bottom:10px;font-size:1.05rem
+  }
+  .standard h4{font-size:1.12rem;margin-bottom:6px}
+  .standard p{color:var(--muted);font-size:.96rem}
+
+  /* ---------- BLOCK 4: indicators + cycle ---------- */
+  .ind-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .ind{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+  .ind .ico{width:38px;height:38px;color:var(--viva-blue);margin-bottom:10px}
+  .ind:nth-child(2) .ico{color:var(--viva-green)}
+  .ind:nth-child(3) .ico{color:var(--viva-orange)}
+  .ind:nth-child(4) .ico{color:var(--viva-blue-dark)}
+  .ind h4{font-size:1.1rem;margin-bottom:6px}
+  .ind p{color:var(--muted);font-size:.94rem}
+
+  .cycle{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:8px;align-items:stretch}
+  .step{
+    background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow);
+    padding:24px;position:relative;border-radius:var(--radius);margin:0 8px;
+  }
+  .step:first-child{margin-left:0}
+  .step:last-child{margin-right:0}
+  .step .n{position:absolute;top:-16px;left:24px;width:36px;height:36px;border-radius:10px;background:var(--viva-blue);color:#fff;font-weight:800;display:grid;place-items:center;box-shadow:0 6px 14px rgba(0,76,147,.4)}
+  .step:nth-child(2) .n{background:var(--viva-green)}
+  .step:nth-child(3) .n{background:var(--viva-orange)}
+  .step h4{font-size:1.15rem;margin:8px 0 8px;color:var(--text)}
+  .step p{color:var(--muted);font-size:.96rem}
+  .step .arr{position:absolute;right:-22px;top:50%;transform:translateY(-50%);color:var(--viva-blue);z-index:2;background:var(--bg);border-radius:50%;padding:2px}
+  .step:last-child .arr{display:none}
+  .cycle-loop{
+    text-align:center;margin-top:18px;font-weight:800;color:var(--viva-blue-dark);
+    display:flex;align-items:center;justify-content:center;gap:10px;font-size:1.05rem
+  }
+  .cycle-loop svg{width:24px;height:24px;color:var(--viva-orange)}
+
+  /* ---------- BLOCK 5: activity ---------- */
+  .activity-head{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:8px}
+  .tag{
+    display:inline-flex;align-items:center;gap:8px;font-weight:700;
+    background:var(--viva-soft,#eef4fb);background:var(--soft);color:var(--viva-blue);
+    padding:8px 16px;border-radius:999px;font-size:.92rem
+  }
+  .tag.format{background:#e7f6e9;color:var(--viva-green-dark)}
+
+  .scenario{
+    background:linear-gradient(135deg,#0f172a,#1e293b);color:#e2e8f0;border-radius:20px;
+    padding:clamp(22px,3vw,32px);box-shadow:var(--shadow);margin-top:22px;position:relative;overflow:hidden
+  }
+  .scenario::before{
+    content:"CENÁRIO-PROBLEMA";position:absolute;top:14px;right:18px;font-size:.72rem;letter-spacing:1.5px;
+    color:#fb923c;font-weight:800;opacity:.9
+  }
+  .scenario h3{color:#fff;font-size:1.3rem;margin-bottom:14px;max-width:40ch}
+  .scenario ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .scenario li{
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);border-radius:12px;
+    padding:14px 16px;display:flex;gap:12px;align-items:flex-start;font-size:.98rem
+  }
+  .scenario li svg{width:20px;height:20px;flex:none;color:var(--viva-orange);margin-top:2px}
+  .scenario li b{color:#fff}
+
+  .tasks{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:24px}
+  .task{
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);
+    padding:24px;border-top:6px solid var(--viva-blue)
+  }
+  .task:nth-child(2){border-top-color:var(--viva-green)}
+  .task:nth-child(3){border-top-color:var(--viva-orange)}
+  .task .num{
+    width:42px;height:42px;border-radius:12px;background:var(--viva-blue);color:#fff;font-weight:800;
+    display:grid;place-items:center;font-size:1.25rem;margin-bottom:12px
+  }
+  .task:nth-child(2) .num{background:var(--viva-green)}
+  .task:nth-child(3) .num{background:var(--viva-orange)}
+  .task h4{font-size:1.12rem;margin-bottom:10px;line-height:1.3}
+  .task p{color:var(--muted);font-size:.96rem}
+  .task p b{color:var(--text)}
+
+  /* ---------- BLOCK 6: closing ---------- */
+  .closing-wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:26px;align-items:center}
+  .closing-synth{
+    background:linear-gradient(135deg,var(--viva-blue),var(--viva-blue-dark));color:#fff;border-radius:24px;
+    padding:clamp(28px,4vw,44px);box-shadow:0 18px 40px rgba(0,76,147,.28)
+  }
+  .closing-synth h3{font-size:clamp(1.5rem,3vw,2.1rem);line-height:1.2;margin-bottom:14px}
+  .closing-synth p{font-size:clamp(1.05rem,1.8vw,1.3rem);opacity:.92;max-width:34ch}
+  .closing-pillars{display:flex;flex-direction:column;gap:14px}
+  .cp{
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);
+    padding:18px 20px;display:flex;align-items:center;gap:14px;border-left:6px solid var(--viva-green)
+  }
+  .cp:nth-child(2){border-left-color:var(--viva-orange)}
+  .cp:nth-child(3){border-left-color:var(--viva-blue)}
+  .cp .ico{width:36px;height:36px;flex:none;color:var(--viva-green)}
+  .cp:nth-child(2) .ico{color:var(--viva-orange)}
+  .cp:nth-child(3) .ico{color:var(--viva-blue)}
+  .cp div b{display:block;font-size:1.05rem}
+  .cp div span{color:var(--muted);font-size:.9rem}
+
+  /* footer hint (no teacher notes — just keyboard hint) */
+  .keyhint{
+    text-align:center;color:var(--muted);font-size:.82rem;margin-top:38px;padding-top:18px;border-top:1px solid var(--border)
+  }
+  kbd{
+    background:#fff;border:1px solid var(--border);border-bottom-width:2px;border-radius:6px;
+    padding:2px 8px;font:inherit;font-size:.78rem;color:var(--text);box-shadow:0 1px 0 var(--border)
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:900px){
+    .pillars{grid-template-columns:repeat(2,1fr)}
+    .impact-grid{grid-template-columns:1fr}
+    .compare{grid-template-columns:1fr}
+    .duo{grid-template-columns:1fr}
+    .standards{grid-template-columns:1fr}
+    .ind-grid{grid-template-columns:repeat(2,1fr)}
+    .cycle{grid-template-columns:1fr}
+    .step{margin:14px 0}
+    .step .arr{display:none}
+    .scenario ul{grid-template-columns:1fr}
+    .tasks{grid-template-columns:1fr}
+    .closing-wrap{grid-template-columns:1fr}
+  }
+  @media (max-width:560px){
+    .header-top{padding:12px 16px}
+    .controls button{padding:8px 12px}
+    .blocks-nav{padding:0 12px 10px}
+    .blocks-nav button{flex:1 1 auto;text-align:center}
+    .pillars{grid-template-columns:1fr}
+    .ind-grid{grid-template-columns:1fr}
+    .scenario::before{position:static;display:block;margin-bottom:8px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="brand">
+      <div class="brand-mark"><span class="b1"></span><span class="b2"></span><span class="b3"></span></div>
+      <div class="brand-text">Ciclo VIVA<small>8º Ano • Gestão da Operação e Resultados</small></div>
+    </div>
+    <div class="controls">
+      <button id="prev" type="button" aria-label="Bloco anterior">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        Anterior
+      </button>
+      <button id="next" type="button" aria-label="Próximo bloco">
+        Próximo
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </div>
+  </div>
+  <nav class="blocks-nav" aria-label="Blocos da aula">
+    <button data-go="0" class="active">Abertura</button>
+    <button data-go="1">Operação e Resultados</button>
+    <button data-go="2">Capacidade e Padrão</button>
+    <button data-go="3">Métricas e Melhoria</button>
+    <button data-go="4">Atividade Prática</button>
+    <button data-go="5">Encerramento</button>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ============ BLOCO 1 — ABERTURA ============ -->
+  <section class="slide active" data-slide="0">
+    <span class="eyebrow"><span class="dot"></span>Bloco 1 • Abertura</span>
+    <h1 class="slide-title">Gestão da Operação e Resultados</h1>
+    <h2 class="slide-sub">Operação que gera resultado</h2>
+
+    <div class="hero-card">
+      <p class="hero-idea">Gerir a operação é organizar <b>pessoas, tempo, insumos e processos</b> para transformar esforço em resultado consistente.</p>
+    </div>
+
+    <div class="pillars">
+      <div class="pillar">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        <h3>Pessoas</h3>
+        <p>Funções claras e equipe sincronizada no mesmo ritmo.</p>
+      </div>
+      <div class="pillar">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 15 14"></polyline></svg>
+        <h3>Tempo</h3>
+        <p>Ritmo de atendimento que não trava nos momentos de pico.</p>
+      </div>
+      <div class="pillar">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+        <h3>Insumos</h3>
+        <p>Estoque na medida certa: nem sobra que vira perda, nem falta que perde venda.</p>
+      </div>
+      <div class="pillar">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        <h3>Processos</h3>
+        <p>Passos padronizados que reduzem erro, retrabalho e variação.</p>
+      </div>
+    </div>
+
+    <div class="flow-arrow">▼</div>
+    <div class="result-banner">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+      Esforço organizado vira resultado consistente
+    </div>
+
+    <div class="keyhint">Navegue com <kbd>←</kbd> <kbd>→</kbd> ou pelos botões no topo.</div>
+  </section>
+
+  <!-- ============ BLOCO 2 — OPERAÇÃO E RESULTADOS ============ -->
+  <section class="slide" data-slide="1">
+    <span class="eyebrow"><span class="dot"></span>Bloco 2 • Operação e Resultados</span>
+    <h1 class="slide-title">Operação conectada ao resultado</h1>
+    <p class="lead">Cada falha na operação vira prejuízo direto. O que parece detalhe na fila ou no balcão aparece no caixa e na satisfação de quem compra.</p>
+
+    <div class="impact-grid">
+      <div class="impact">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+        <h3>Filas que geram desistência</h3>
+        <p>Quem espera demais desiste da compra — a venda que deixa de acontecer não volta mais.</p>
+        <span class="loss">Perde venda e cliente</span>
+      </div>
+      <div class="impact">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+        <h3>Desperdício de insumos</h3>
+        <p>Gelo, copos e ingredientes que sobram aumentam o custo e reduzem a margem de lucro do combo.</p>
+        <span class="loss">Reduz a margem</span>
+      </div>
+      <div class="impact">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+        <h3>Retrabalho que consome tempo</h3>
+        <p>Refazer pedido errado ocupa a equipe duas vezes e atrasa todo o resto da fila.</p>
+        <span class="loss">Perde capacidade</span>
+      </div>
+    </div>
+
+    <div class="section-label">Operação improvisada × operação estruturada</div>
+
+    <div class="compare">
+      <div class="col improv">
+        <div class="head">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+          Operação improvisada
+        </div>
+        <ul>
+          <li><span class="mark">✕</span> Cada integrante faz do próprio jeito</li>
+          <li><span class="mark">✕</span> Tudo montado do zero só após o pagamento</li>
+          <li><span class="mark">✕</span> Pedido anotado em papel solto, sem conferência</li>
+          <li><span class="mark">✕</span> Sem meta de tempo por pedido ou por combo</li>
+          <li><span class="mark">✕</span> Estoque sem controle durante o evento</li>
+        </ul>
+      </div>
+      <div class="col struct">
+        <div class="head">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          Operação estruturada
+        </div>
+        <ul>
+          <li><span class="mark">✓</span> Funções definidas: caixa, montagem, entrega, reposição</li>
+          <li><span class="mark">✓</span> Pré-montagem e kits prontos para o horário de pico</li>
+          <li><span class="mark">✓</span> Pedido conferido antes de iniciar a montagem</li>
+          <li><span class="mark">✓</span> Tempo padrão por combo, com meta de minutos</li>
+          <li><span class="mark">✓</span> Estoque conferido a cada turno, com alerta de falta</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BLOCO 3 — CAPACIDADE E PADRÃO ============ -->
+  <section class="slide" data-slide="2">
+    <span class="eyebrow"><span class="dot"></span>Bloco 3 • Capacidade e Padrão</span>
+    <h1 class="slide-title">Capacidade, ritmo e padrão de qualidade</h1>
+    <p class="lead">Atender bem no pico não é sorte: é ter capacidade calculada, ritmo sustentável e padrões simples que mantêm qualidade e velocidade juntas.</p>
+
+    <div class="duo">
+      <div class="concept">
+        <h3>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+          Capacidade e ritmo no pico
+        </h3>
+        <div class="row"><span class="k">Capacidade</span><span class="v">Quantos atendimentos a equipe consegue fazer por minuto ou por hora, considerando quem monta, quem cobra e quem entrega.</span></div>
+        <div class="row"><span class="k">Ritmo</span><span class="v">Manter o fluxo constante no pico, sem acelerar a ponto de errar nem travar a ponto de acumular fila.</span></div>
+        <div class="row"><span class="k">Pico</span><span class="v">O momento de maior demanda — início do evento, intervalo ou horário de maior movimento — onde a operação é mais testada.</span></div>
+      </div>
+      <div class="peak-meter">
+        <div class="lbl">Quando a fila trava no pico</div>
+        <div class="meter-bar"><div class="fill"></div></div>
+        <div class="meter-cap"><span>Ritmo ideal</span><span>Operação no limite</span></div>
+        <p style="margin-top:16px;color:var(--muted);font-size:.96rem">Se a capacidade é menor que a demanda no pico, a fila cresce, a espera aumenta e o resultado cai — mesmo com equipe disponível.</p>
+      </div>
+    </div>
+
+    <div class="section-label green">Padrões simples reduzem variação, evitam erros e mantêm qualidade e velocidade</div>
+
+    <div class="standards">
+      <div class="standard">
+        <div class="num">1</div>
+        <h4>Padrão de montagem</h4>
+        <p>Passos fixos e na mesma ordem para cada combo: todo mundo monta igual, mais rápido e com menos erro.</p>
+      </div>
+      <div class="standard">
+        <div class="num">2</div>
+        <h4>Padrão de tempo</h4>
+        <p>Meta de minutos por pedido e por combo. Quem monta sabe quanto tempo tem para entregar sem acumular fila.</p>
+      </div>
+      <div class="standard">
+        <div class="num">3</div>
+        <h4>Padrão de qualidade</h4>
+        <p>Quantidade certa, apresentação e conferência simples antes de entregar — o que sai está sempre como combinado.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BLOCO 4 — MÉTRICAS E MELHORIA ============ -->
+  <section class="slide" data-slide="3">
+    <span class="eyebrow"><span class="dot"></span>Bloco 4 • Métricas e Melhoria</span>
+    <h1 class="slide-title">Leitura de dados e melhoria contínua</h1>
+    <p class="lead">Sem medir, não dá para melhorar com certeza. Indicadores simples mostram onde a operação ganha ou perde resultado.</p>
+
+    <div class="section-label">Indicadores básicos de acompanhamento</div>
+
+    <div class="ind-grid">
+      <div class="ind">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 15 14"></polyline></svg>
+        <h4>Tempo de espera</h4>
+        <p>Quanto o cliente fica na fila até ser atendido. Mostra se o ritmo acompanha a demanda.</p>
+      </div>
+      <div class="ind">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
+        <h4>Itens mais vendidos</h4>
+        <p>Quais combos e bebidas saem mais. Guia o pré-preparo e o dimensionamento do estoque.</p>
+      </div>
+      <div class="ind">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"></path></svg>
+        <h4>Taxa de erro</h4>
+        <p>Pedidos refeitos ou entregues errado. Cada erro é tempo perdido e cliente frustrado.</p>
+      </div>
+      <div class="ind">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+        <h4>Sobras e falta de estoque</h4>
+        <p>O que sobrou (perda/desperdício) e o que faltou (venda perdida). Ajusta a próxima compra.</p>
+      </div>
+    </div>
+
+    <div class="section-label green">Ciclo de melhoria contínua</div>
+
+    <div class="cycle">
+      <div class="step">
+        <div class="n">1</div>
+        <h4>Ajustar o processo</h4>
+        <p>Mudar o passo ou a função que não funcionou, com base no que os indicadores mostraram.</p>
+        <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <h4>Observar o impacto nos resultados</h4>
+        <p>Medir de novo depois da mudança: a fila diminuiu? O erro caiu? A venda aumentou?</p>
+        <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <h4>Consolidar o que melhora a performance</h4>
+        <p>O que funcionou vira padrão oficial da operação — e o ciclo recomeça na próxima ação.</p>
+      </div>
+    </div>
+    <div class="cycle-loop">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+      O ciclo se repete a cada operação
+    </div>
+  </section>
+
+  <!-- ============ BLOCO 5 — ATIVIDADE PRÁTICA ============ -->
+  <section class="slide" data-slide="4">
+    <span class="eyebrow"><span class="dot"></span>Bloco 5 • Atividade Prática</span>
+    <h1 class="slide-title">Auditoria de Operação e Resultado</h1>
+    <div class="activity-head">
+      <span class="tag format">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        Duplas ou trios
+      </span>
+      <span class="tag">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+        Analisar • Propor • Definir
+      </span>
+    </div>
+
+    <div class="scenario">
+      <h3>Estação de bebidas geladas e combos rápidos do 8º ano em evento escolar de 2 horas</h3>
+      <ul>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg><span>A <b>fila travou no pico de 30 minutos</b> porque tudo era montado do zero só após o pagamento.</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"></path></svg><span><b>18% dos pedidos foram refeitos</b> por causa de anotação em papel solto.</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg><span><b>Sobraram gelo e copos pequenos</b>, mas faltou o item principal do combo mais lucrativo na primeira metade.</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path></svg><span>Parte da equipe ficou <b>ociosa</b> enquanto um único integrante centralizava montagem e entrega.</span></li>
+      </ul>
+    </div>
+
+    <div class="section-label">Tarefas da atividade</div>
+
+    <div class="tasks">
+      <div class="task">
+        <div class="num">1</div>
+        <h4>Identificar 3 pontos onde a operação reduziu o resultado</h4>
+        <p>Aponte <b>três gargalos</b> do cenário que causaram perda de venda, margem ou capacidade.</p>
+      </div>
+      <div class="task">
+        <div class="num">2</div>
+        <h4>Propor um novo fluxo operacional para o pico</h4>
+        <p>Defina <b>divisão de funções, pré-preparo/padronização e conferência simples</b> que evitem a fila travar.</p>
+      </div>
+      <div class="task">
+        <div class="num">3</div>
+        <h4>Definir 2 métricas e 1 ação de melhoria contínua</h4>
+        <p>Escolha <b>2 métricas de acompanhamento</b> e <b>1 ação de melhoria contínua</b> para a próxima operação.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BLOCO 6 — ENCERRAMENTO ============ -->
+  <section class="slide" data-slide="5">
+    <span class="eyebrow"><span class="dot"></span>Bloco 6 • Encerramento</span>
+    <h1 class="slide-title">Síntese final</h1>
+    <h2 class="slide-sub">Operação que aprende consigo mesma</h2>
+
+    <div class="closing-wrap">
+      <div class="closing-synth">
+        <h3>Acompanhar, medir e melhorar — com consistência.</h3>
+        <p>Gestão da operação e dos resultados é acompanhar o processo, medir o impacto nos resultados e aplicar melhorias contínuas até virar padrão.</p>
+      </div>
+      <div class="closing-pillars">
+        <div class="cp">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          <div><b>Acompanhar o processo</b><span>Funções, ritmo e padrão no dia a dia da operação.</span></div>
+        </div>
+        <div class="cp">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          <div><b>Medir o impacto nos resultados</b><span>Indicadores simples que mostram onde se ganha ou se perde.</span></div>
+        </div>
+        <div class="cp">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+          <div><b>Melhorar com consistência</b><span>Ajustar, observar e consolidar o que funciona — a cada operação.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="keyhint">Ciclo VIVA • 8º Ano • Gestão da Operação e Resultados &nbsp;•&nbsp; <kbd>←</kbd> <kbd>→</kbd> para navegar</div>
+  </section>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+  var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
+  var navBtns = Array.prototype.slice.call(document.querySelectorAll(".blocks-nav button"));
+  var prevBtn = document.getElementById("prev");
+  var nextBtn = document.getElementById("next");
+  var current = 0;
+
+  function show(i){
+    if(i < 0) i = 0;
+    if(i > slides.length - 1) i = slides.length - 1;
+    current = i;
+    slides.forEach(function(s, idx){ s.classList.toggle("active", idx === i); });
+    navBtns.forEach(function(b, idx){ b.classList.toggle("active", idx === i); });
+    prevBtn.disabled = (i === 0);
+    nextBtn.disabled = (i === slides.length - 1);
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+
+  function next(){ if(current < slides.length - 1) show(current + 1); }
+  function prev(){ if(current > 0) show(current - 1); }
+
+  navBtns.forEach(function(b){
+    b.addEventListener("click", function(){ show(parseInt(b.getAttribute("data-go"),10)); });
+  });
+  prevBtn.addEventListener("click", prev);
+  nextBtn.addEventListener("click", next);
+
+  document.addEventListener("keydown", function(e){
+    if(e.target && /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
+    if(e.key === "ArrowRight"){ e.preventDefault(); next(); }
+    else if(e.key === "ArrowLeft"){ e.preventDefault(); prev(); }
+  });
+
+  // init
+  show(0);
+})();
+</script>
+</body>
+</html>
